@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Analyze public GitHub profiles and repository statistics.">
+    <title>GitScope — GitHub Profile Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="nav">
+        <a class="brand" href="/">
+            <span class="brand-mark">G</span>
+            <span>GitScope</span>
+        </a>
+        <span class="nav-note">GitHub Profile Analyzer</span>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="eyebrow"><span class="status-dot"></span> PUBLIC PROFILE INSIGHTS</div>
+            <h1>Know your GitHub<br><span>at a glance.</span></h1>
+            <p class="hero-copy">Explore a developer's profile, repositories, stars, forks and languages — all in one simple dashboard.</p>
+
+            <form id="searchForm" class="search-form">
+                <span class="search-icon">⌕</span>
+                <input id="username" type="text" placeholder="Enter a GitHub username" autocomplete="off" aria-label="GitHub username">
+                <button id="searchBtn" type="submit">Analyze profile <span>→</span></button>
+            </form>
+            <p class="hint">Try <button class="sample" type="button" data-username="torvalds">torvalds</button>, <button class="sample" type="button" data-username="gaearon">gaearon</button> or your own username.</p>
+        </section>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+
+        <section id="dashboard" class="dashboard hidden">
+            <div class="profile-panel panel">
+                <img id="avatar" class="avatar" src="" alt="GitHub profile avatar">
+                <div class="profile-main">
+                    <div class="profile-title-row">
+                        <div>
+                            <p class="small-label">DEVELOPER PROFILE</p>
+                            <h2 id="name">Developer</h2>
+                            <p id="handle" class="muted">@username</p>
+                        </div>
+                        <a id="profileLink" class="outline-link" href="#" target="_blank" rel="noopener noreferrer">View GitHub ↗</a>
+                    </div>
+                    <p id="bio" class="bio"></p>
+                    <div class="profile-details">
+                        <span id="location">⌖ Not specified</span>
+                        <span id="company">◈ Not specified</span>
+                        <span id="createdAt">Joined —</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card panel"><span class="stat-icon purple">▤</span><p>Public repositories</p><strong id="repos">0</strong><small>On GitHub profile</small></article>
+                <article class="stat-card panel"><span class="stat-icon blue">♙</span><p>Followers</p><strong id="followers">0</strong><small>People following</small></article>
+                <article class="stat-card panel"><span class="stat-icon green">★</span><p>Stars collected</p><strong id="stars">0</strong><small>In repositories loaded</small></article>
+                <article class="stat-card panel"><span class="stat-icon orange">⑂</span><p>Forks</p><strong id="forks">0</strong><small>In repositories loaded</small></article>
+            </div>
+
+            <div class="content-grid">
+                <section class="panel section-panel">
+                    <div class="section-heading">
+                        <div><p class="small-label">REPOSITORY INSIGHTS</p><h2>Repositories</h2></div>
+                        <span id="repoCount" class="count-pill">0 loaded</span>
+                    </div>
+                    <div class="repo-controls">
+                        <input id="repoSearch" type="search" placeholder="Search repositories..." aria-label="Search repositories">
+                        <select id="repoSort" aria-label="Sort repositories">
+                            <option value="updated">Recently updated</option>
+                            <option value="stars">Most stars</option>
+                            <option value="forks">Most forks</option>
+                            <option value="name">Name A–Z</option>
+                        </select>
+                    </div>
+                    <div id="repositoryList" class="repository-list"></div>
+                    <p id="repoNote" class="footnote">Showing up to 100 recently updated public repositories. Forks may be included.</p>
+                </section>
+
+                <aside class="side-column">
+                    <section class="panel section-panel">
+                        <div class="section-heading"><div><p class="small-label">LANGUAGE MIX</p><h2>Languages</h2></div></div>
+                        <div id="languageList" class="language-list"></div>
+                        <p class="footnote">Counts use each repository's primary language, not lines of code.</p>
+                    </section>
+
+                    <section class="panel score-panel">
+                        <p class="small-label">QUICK SNAPSHOT</p>
+                        <h2>Profile score</h2>
+                        <div class="score-row"><strong id="score">0</strong><span>/ 100</span></div>
+                        <div class="score-track"><div id="scoreBar" class="score-fill"></div></div>
+                        <p class="score-description">A simple project-made score based on public repositories, followers and stars. It is not an official GitHub rating.</p>
+                        <div class="top-repo">
+                            <p class="small-label">MOST-STARRED LOADED REPO</p>
+                            <a id="topRepo" href="#" target="_blank" rel="noopener noreferrer">No repositories yet</a>
+                            <span id="topRepoStars" class="muted"></span>
+                        </div>
+                        <div class="mini-stat"><span>Following</span><strong id="following">0</strong></div>
+                        <div class="mini-stat"><span>Account age</span><strong id="accountAge">0 years</strong></div>
+                    </section>
+                </aside>
+            </div>
+            <p class="data-note">Data comes from the public GitHub API. Star and fork totals cover only the repositories loaded in this dashboard.</p>
+        </section>
+
+        <section id="welcome" class="welcome-grid">
+            <article class="welcome-card"><span>01</span><h3>Profile overview</h3><p>See key public account details and activity signals.</p></article>
+            <article class="welcome-card"><span>02</span><h3>Repository explorer</h3><p>Find projects quickly and sort them by stars or forks.</p></article>
+            <article class="welcome-card"><span>03</span><h3>Language breakdown</h3><p>Get a quick view of the primary languages across loaded repositories.</p></article>
+        </section>
+    </main>
+
+    <footer><span>GitScope</span><span>Built with HTML, CSS, JavaScript & Flask</span></footer>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
